@@ -51,19 +51,22 @@
 
     <TableLayout
         android:id="@+id/overlay"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="#2F0A4E">
+        android:background="#B19CD9">
 
         <TextView
             android:id="@+id/TextView01"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="400px"
+            android:layout_marginLeft="200px"
             android:layout_marginTop="200px"
-            android:layout_marginRight="400px"
+            android:layout_marginRight="200px"
             android:layout_marginBottom="50px"
-            android:text="enter room name" />
+            android:textAlignment="center"
+            android:textStyle="bold"
+            android:textSize="24dp"
+            android:text="Enter room name in message box below!" />
 
         <Button
             android:id="@+id/newEventButton"
@@ -82,8 +85,9 @@
             android:layout_alignStart="@+id/overlay"
             android:layout_marginBottom="80px"
             android:ems="10"
+            android:hint="Event Name"
             android:inputType="textPersonName"
-            android:text="" />
+            android:text=""
             android:visibility="gone" />
 
         <EditText
@@ -93,8 +97,9 @@
             android:layout_alignStart="@+id/overlay"
             android:layout_marginBottom="60px"
             android:ems="10"
+            android:hint="Event Code"
             android:inputType="textPersonName"
-            android:text="" />
+            android:text=""
             android:visibility="gone" />
 
         <Button

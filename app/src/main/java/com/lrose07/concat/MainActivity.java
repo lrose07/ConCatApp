@@ -165,15 +165,15 @@ public class MainActivity extends AppCompatActivity {
         String newEventCode = eventCode.getText().toString();
 
         // check for code uniqueness
-        checkCodeUnique(newEventCode);
-        if (!uniqueFlag) {
-            Toast.makeText(this, "Event code taken.", Toast.LENGTH_SHORT).show();
-        } else {
-            ConCatEvent newEvent = new ConCatEvent(newEventName, newEventCode);
-            mEventsDatabaseReference.push().setValue(newEvent);
-
-            enterNewEventRoom(newEvent);
-        }
+        checkCodeUnique(newEventName, newEventCode);
+//        if (!uniqueFlag) {
+//            Toast.makeText(this, "Event code taken.", Toast.LENGTH_SHORT).show();
+//        } else {
+//            ConCatEvent newEvent = new ConCatEvent(newEventName, newEventCode);
+//            mEventsDatabaseReference.push().setValue(newEvent);
+//
+//            enterNewEventRoom(newEvent);
+//        }
     }
 
     private void enterNewEventRoom(ConCatEvent event) {
@@ -181,7 +181,7 @@ public class MainActivity extends AppCompatActivity {
         checkCurrentEventNull();
     }
 
-    private void checkCodeUnique(String code) {
+    private void checkCodeUnique(String name, String code) {
         DatabaseReference findEventRef = mEventsDatabaseReference.child(code);
         DatabaseReference eventRefParent = findEventRef.getParent();
 
@@ -197,6 +197,16 @@ public class MainActivity extends AppCompatActivity {
                         }
                     }
                 }
+
+                if (uniqueFlag) {
+                    ConCatEvent newEvent = new ConCatEvent(name, code);
+                    mEventsDatabaseReference.push().setValue(newEvent);
+
+                    enterNewEventRoom(newEvent);
+                } else {
+                    logger.log(Level.SEVERE, "code not unique");
+                    makeToast("Event code exists already");
+                }
             }
 
             @Override
@@ -210,10 +220,12 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    private void makeToast(String message) {
+        Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
+    }
+
     private void setUniqueFlag(boolean bool) {
-        System.out.println("uf: " + uniqueFlag);
         uniqueFlag = bool;
-        System.out.println("uf: " + uniqueFlag);
     }
 
     private void checkCurrentEventNull() {
