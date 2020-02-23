@@ -117,6 +117,7 @@ public class MainActivity extends AppCompatActivity {
                             if (tempEvent != null) {
                                 if (tempEvent.getCode().equals(enteredCode)) {
                                     setCurrentEvent(tempEvent);
+                                    makeToast("Successfully entered " + currentEvent.getName());
                                 }
                             }
                         }
@@ -143,7 +144,6 @@ public class MainActivity extends AppCompatActivity {
         });
 
         settings.setOnClickListener(e -> {
-            //System.out.print("test");
             Intent myIntent = new Intent(MainActivity.this, Settings.class);
             startActivity(myIntent);
         });
@@ -163,21 +163,13 @@ public class MainActivity extends AppCompatActivity {
         String newEventName = eventName.getText().toString();
         String newEventCode = eventCode.getText().toString();
 
-        // check for code uniqueness
         checkCodeUnique(newEventName, newEventCode);
-//        if (!uniqueFlag) {
-//            Toast.makeText(this, "Event code taken.", Toast.LENGTH_SHORT).show();
-//        } else {
-//            ConCatEvent newEvent = new ConCatEvent(newEventName, newEventCode);
-//            mEventsDatabaseReference.push().setValue(newEvent);
-//
-//            enterNewEventRoom(newEvent);
-//        }
     }
 
     private void enterNewEventRoom(ConCatEvent event) {
         currentEvent = event;
         checkCurrentEventNull();
+        makeToast("Successfully entered " + currentEvent.getName());
     }
 
     private void checkCodeUnique(String name, String code) {
@@ -220,6 +212,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void makeToast(String message) {
+        logger.log(Level.SEVERE, "toast made");
         Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
     }
 
@@ -273,9 +266,5 @@ public class MainActivity extends AppCompatActivity {
 
             mMessagesDatabaseReference.addChildEventListener(mChildEventListener);
         }
-    }
-
-    public void setTextFeatures(boolean bool){
-        textFeatures = bool;
     }
 }
