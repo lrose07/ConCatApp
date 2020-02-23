@@ -13,7 +13,6 @@ public class Settings extends AppCompatActivity {
 
     private Button mLeave;
     private Button mShare;
-    private Switch mTextFet;
 
 
     @Override
