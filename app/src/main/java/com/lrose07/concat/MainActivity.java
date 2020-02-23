@@ -172,10 +172,9 @@ public class MainActivity extends AppCompatActivity {
                     ConCatMessage ccMessage = dataSnapshot.getValue(ConCatMessage.class);
                     checkCurrentEventNull();
                     if (ccMessage.getEvent() != null) {
-//                        if (ccMessage.getEvent() == currentEvent) {
-//                            mMessageAdapter.add(ccMessage);
-//                        }
-                        mMessageAdapter.add(ccMessage);
+                        if (ccMessage.getEvent().getCode().equals(currentEvent.getCode())) {
+                            mMessageAdapter.add(ccMessage);
+                        }
                     }
                 }
 
