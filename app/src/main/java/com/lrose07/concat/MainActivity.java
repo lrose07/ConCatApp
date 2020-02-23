@@ -77,7 +77,6 @@ public class MainActivity extends AppCompatActivity {
         mEventsDatabaseReference = mFirebaseDatabase.getReference().child("events");
 
         mMessageListView = findViewById(R.id.messageListView);
-        mPhotoPickerButton = findViewById(R.id.photoPickerButton);
         mMessageEditText = findViewById(R.id.messageEditText);
         mSendButton = findViewById(R.id.sendButton);
         overlay = findViewById(R.id.overlay);
