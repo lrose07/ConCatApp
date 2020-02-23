@@ -18,6 +18,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TableLayout;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -30,7 +31,14 @@ public class MainActivity extends AppCompatActivity {
     private EditText mMessageEditText;
     private Button mSendButton;
     private boolean roomSuccessful = false;
+
     private TableLayout overlay;
+    private Button newEventButton;
+    private EditText eventName;
+    private EditText eventCode;
+    private Button createEvent;
+
+    private boolean uniqueFlag = true;
 
     private DatabaseReference mMessagesDatabaseReference;
     private DatabaseReference mEventsDatabaseReference;
@@ -54,6 +62,14 @@ public class MainActivity extends AppCompatActivity {
         mMessageEditText = findViewById(R.id.messageEditText);
         mSendButton = findViewById(R.id.sendButton);
         overlay = findViewById(R.id.overlay);
+
+        newEventButton = findViewById(R.id.newEventButton);
+        eventName = findViewById(R.id.eventName);
+        eventCode = findViewById(R.id.eventCode);
+        createEvent = findViewById(R.id.createEvent);
+
+        newEventButton.setOnClickListener(e -> newEventButtonClicked());
+        createEvent.setOnClickListener(e -> createEventClicked());
 
         List<ConCatMessage> ccMessages = new ArrayList<>();
         mMessageAdapter = new MessageAdapter(this, R.layout.message, ccMessages);
@@ -121,6 +137,68 @@ public class MainActivity extends AppCompatActivity {
             }
 
         });
+    }
+
+    private void newEventButtonClicked() {
+        logger.log(Level.SEVERE, "new event button clicked");
+        eventName.setVisibility(View.VISIBLE);
+        eventCode.setVisibility(View.VISIBLE);
+        createEvent.setVisibility(View.VISIBLE);
+        newEventButton.setVisibility(View.GONE);
+    }
+
+    private void createEventClicked() {
+        String newEventName = eventName.getText().toString();
+        String newEventCode = eventCode.getText().toString();
+
+        // check for code uniqueness
+        checkCodeUnique(newEventCode);
+        if (!uniqueFlag) {
+            Toast.makeText(this, "Event code taken.", Toast.LENGTH_SHORT).show();
+        } else {
+            ConCatEvent newEvent = new ConCatEvent(newEventName, newEventCode);
+            mEventsDatabaseReference.push().setValue(newEvent);
+
+            enterNewEventRoom(newEvent);
+        }
+    }
+
+    private void enterNewEventRoom(ConCatEvent event) {
+        currentEvent = event;
+        checkCurrentEventNull();
+    }
+
+    private void checkCodeUnique(String code) {
+        DatabaseReference findEventRef = mEventsDatabaseReference.child(code);
+        DatabaseReference eventRefParent = findEventRef.getParent();
+
+        ValueEventListener eventListener = new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                setUniqueFlag(true);
+                for(DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                    ConCatEvent tempEvent = snapshot.getValue(ConCatEvent.class);
+                    if (tempEvent != null) {
+                        if (tempEvent.getCode().equals(code)) {
+                            setUniqueFlag(false);
+                        }
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                logger.log(Level.INFO, "Database error");
+            }
+        };
+
+        if (eventRefParent != null) {
+            eventRefParent.addListenerForSingleValueEvent(eventListener);
+        }
+    }
+
+    private void setUniqueFlag(boolean bool) {
+        uniqueFlag = bool;
     }
 
     private void checkCurrentEventNull() {
