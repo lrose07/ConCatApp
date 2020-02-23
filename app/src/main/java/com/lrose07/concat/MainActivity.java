@@ -114,14 +114,40 @@ public class MainActivity extends AppCompatActivity {
                 {
                     overlay.setVisibility(View.GONE);
                     roomSuccessful = true;
+                    attachDatabaseReadListener();
                 } else {
                     ConCatEvent event = new ConCatEvent();
-                    ConCatMessage ccMessage = new ConCatMessage(mMessageEditText.getText().toString(),
-                            new Timestamp(System.currentTimeMillis()), event);
+                    ConCatMessage ccMessage = new ConCatMessage(mMessageEditText.getText().toString(), event);
                     mMessagesDatabaseReference.push().setValue(ccMessage);
                     mMessageEditText.setText("");
                 }
             }
         });
+    }
+
+    private void attachDatabaseReadListener() {
+        if (mChildEventListener == null) {
+            mChildEventListener = new ChildEventListener() {
+                @Override
+                public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+                    ConCatMessage ccMessage = dataSnapshot.getValue(ConCatMessage.class);
+                    mMessageAdapter.add(ccMessage);
+                }
+
+                @Override
+                public void onChildChanged(DataSnapshot dataSnapshot, String s) {}
+
+                @Override
+                public void onChildRemoved(DataSnapshot dataSnapshot) {}
+
+                @Override
+                public void onChildMoved(DataSnapshot dataSnapshot, String s) {}
+
+                @Override
+                public void onCancelled(DatabaseError databaseError) {}
+            };
+
+            mMessagesDatabaseReference.addChildEventListener(mChildEventListener);
+        }
     }
 }

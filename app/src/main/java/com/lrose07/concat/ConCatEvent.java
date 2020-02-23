@@ -1,19 +1,18 @@
 package com.lrose07.concat;
 
-import java.sql.Timestamp;
 
 public class ConCatEvent {
 
     private String name;
-    private Timestamp start;
-    private Timestamp end;
+    private long start;
+    private long end;
     private String code;
 
     ConCatEvent() {
 
     }
 
-    ConCatEvent(String name, Timestamp start, Timestamp end, String code) {
+    ConCatEvent(String name, long start, long end, String code) {
         this.name = name;
         this.start = start;
         this.end = end;
