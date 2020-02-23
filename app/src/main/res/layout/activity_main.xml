@@ -7,8 +7,7 @@
     android:paddingBottom="16dp"
     android:paddingLeft="16dp"
     android:paddingRight="16dp"
-    android:paddingTop="16dp"
-    tools:context="com.google.firebase.udacity.friendlychat.MainActivity">
+    android:paddingTop="16dp">
 
     <ListView
         android:id="@+id/messageListView"
@@ -47,19 +46,64 @@
 
     </LinearLayout>
 
-    <TableLayout android:id="@+id/overlay"
+    <TableLayout
+        android:id="@+id/overlay"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:background="#55771B">
-        <TextView android:text="enter room name"
+
+        <TextView
             android:id="@+id/TextView01"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="400px"
-            android:layout_marginBottom="400px"
+            android:layout_marginTop="200px"
             android:layout_marginRight="400px"
-            android:layout_marginTop="400px"
-            />
+            android:layout_marginBottom="50px"
+            android:text="enter room name" />
+
+        <Button
+            android:id="@+id/newEventButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="400px"
+            android:layout_marginTop="0px"
+            android:layout_marginRight="400px"
+            android:layout_marginBottom="200px"
+            android:text="New Event" />
+
+        <EditText
+            android:id="@+id/eventName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignStart="@+id/overlay"
+            android:layout_marginBottom="80px"
+            android:visibility="gone"
+            android:ems="10"
+            android:inputType="textPersonName"
+            android:text="Event Name" />
+
+        <EditText
+            android:id="@+id/eventCode"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignStart="@+id/overlay"
+            android:layout_marginBottom="60px"
+            android:visibility="gone"
+            android:ems="10"
+            android:inputType="textPersonName"
+            android:text="Event Code" />
+
+        <Button
+            android:id="@+id/createEvent"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:visibility="gone"
+            android:text="Create" />
 
     </TableLayout>
+
+
+
+
 </RelativeLayout>
