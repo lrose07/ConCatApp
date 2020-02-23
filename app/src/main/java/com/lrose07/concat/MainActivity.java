@@ -47,7 +47,6 @@ public class MainActivity extends AppCompatActivity {
     private ChildEventListener mChildEventListener;
 
     private ConCatEvent currentEvent;
-    private boolean textFeatures = false;
 
     Logger logger = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
 
@@ -112,14 +111,19 @@ public class MainActivity extends AppCompatActivity {
                 ValueEventListener eventListener = new ValueEventListener() {
                     @Override
                     public void onDataChange(DataSnapshot dataSnapshot) {
+                        boolean eventFound = false;
                         for(DataSnapshot snapshot : dataSnapshot.getChildren()) {
                             ConCatEvent tempEvent = snapshot.getValue(ConCatEvent.class);
                             if (tempEvent != null) {
                                 if (tempEvent.getCode().equals(enteredCode)) {
+                                    eventFound = true;
                                     setCurrentEvent(tempEvent);
                                     makeToast("Successfully entered " + currentEvent.getName());
                                 }
                             }
+                        }
+                        if (!eventFound) {
+                            makeToast("Event chat not found!");
                         }
                     }
 
@@ -150,7 +154,6 @@ public class MainActivity extends AppCompatActivity {
         });
 
     }
-
 
     private void newEventButtonClicked() {
         logger.log(Level.SEVERE, "new event button clicked");
