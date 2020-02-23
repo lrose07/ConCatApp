@@ -59,4 +59,20 @@
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
         android:layout_centerVertical="true"/>
+
+    <TableLayout android:id="@+id/overlay"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="#55771B">
+        <TextView android:text="enter room name"
+            android:id="@+id/TextView01"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="400px"
+            android:layout_marginBottom="400px"
+            android:layout_marginRight="400px"
+            android:layout_marginTop="400px"
+            />
+
+    </TableLayout>
 </RelativeLayout>
