@@ -15,19 +15,21 @@
  */
 package com.lrose07.concat;
 
+import java.sql.Timestamp;
+
 public class ConCatMessage {
 
     private String text;
-    private String name;
-    private String photoUrl;
+    private Timestamp timestamp;
+    private ConCatEvent event;
 
     public ConCatMessage() {
     }
 
-    public ConCatMessage(String text, String name, String photoUrl) {
+    public ConCatMessage(String text, Timestamp time, ConCatEvent event) {
         this.text = text;
-        this.name = name;
-        this.photoUrl = photoUrl;
+        this.timestamp = time;
+        this.event = event;
     }
 
     public String getText() {
@@ -38,19 +40,11 @@ public class ConCatMessage {
         this.text = text;
     }
 
-    public String getName() {
-        return name;
+    public Timestamp getTimestamp() {
+        return timestamp;
     }
 
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getPhotoUrl() {
-        return photoUrl;
-    }
-
-    public void setPhotoUrl(String photoUrl) {
-        this.photoUrl = photoUrl;
+    public void setTimestamp(Timestamp time) {
+        this.timestamp = time;
     }
 }
