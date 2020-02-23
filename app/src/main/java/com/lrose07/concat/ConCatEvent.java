@@ -10,10 +10,10 @@ public class ConCatEvent {
 
     }
 
-//    ConCatEvent(String name, String code) {
-//        this.name = name;
-//        this.code = code;
-//    }
+    ConCatEvent(String name, String code) {
+        this.name = name;
+        this.code = code;
+    }
 
     void setName(String name) {
         this.name = name;

@@ -81,9 +81,6 @@ public class MainActivity extends AppCompatActivity {
         mSendButton = findViewById(R.id.sendButton);
         overlay = findViewById(R.id.overlay);
 
-
-
-
         List<ConCatMessage> ccMessages = new ArrayList<>();
         mMessageAdapter = new MessageAdapter(this, R.layout.message, ccMessages);
         mMessageListView.setAdapter(mMessageAdapter);
