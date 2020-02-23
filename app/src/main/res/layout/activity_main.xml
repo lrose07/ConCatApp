@@ -17,7 +17,10 @@
         android:stackFromBottom="true"
         android:divider="@android:color/transparent"
         android:transcriptMode="alwaysScroll"
-        tools:listitem="@layout/item_message"/>
+        tools:listitem="@layout/item_message">
+
+
+    </ListView>
 
     <LinearLayout
         android:id="@+id/linearLayout"
@@ -50,7 +53,7 @@
         android:id="@+id/overlay"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:background="#55771B">
+        android:background="#2F0A4E">
 
         <TextView
             android:id="@+id/TextView01"
@@ -78,10 +81,10 @@
             android:layout_height="wrap_content"
             android:layout_alignStart="@+id/overlay"
             android:layout_marginBottom="80px"
-            android:visibility="gone"
             android:ems="10"
             android:inputType="textPersonName"
-            android:text="Event Name" />
+            android:text="Event Name"
+            android:visibility="gone" />
 
         <EditText
             android:id="@+id/eventCode"
@@ -89,21 +92,27 @@
             android:layout_height="wrap_content"
             android:layout_alignStart="@+id/overlay"
             android:layout_marginBottom="60px"
-            android:visibility="gone"
             android:ems="10"
             android:inputType="textPersonName"
-            android:text="Event Code" />
+            android:text="Event Code"
+            android:visibility="gone" />
 
         <Button
             android:id="@+id/createEvent"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:visibility="gone"
-            android:text="Create" />
+            android:text="Create"
+            android:visibility="gone" />
 
     </TableLayout>
 
-
+    <Button
+        android:id="@+id/settings"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="invisible"
+        android:layout_alignParentRight="true"
+        android:text="Settings" />
 
 
 </RelativeLayout>

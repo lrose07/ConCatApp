@@ -3,8 +3,8 @@ package com.lrose07.concat;
 
 public class ConCatEvent {
 
-    private String name;
-    private String code;
+    public String name;
+    public String code;
 
     ConCatEvent() {
 
