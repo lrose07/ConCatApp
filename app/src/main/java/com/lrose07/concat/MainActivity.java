@@ -30,6 +30,7 @@ import android.widget.TableLayout;
 
 import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -118,18 +119,15 @@ public class MainActivity extends AppCompatActivity {
                 if (!roomSuccessful) {
                     // if code entered exists?
                     final String enteredCode = mMessageEditText.getText().toString();
-                    DatabaseReference findEventRef = mEventsDatabaseReference.child(enteredCode);
+                    final DatabaseReference findEventRef = mEventsDatabaseReference.child(enteredCode);
+                    DatabaseReference eventRefParent = findEventRef.getParent();
 
                     ValueEventListener eventListener = new ValueEventListener() {
                         @Override
                         public void onDataChange(DataSnapshot dataSnapshot) {
-                            logger.log(Level.SEVERE, dataSnapshot.getKey());
-                            if(dataSnapshot.getKey().equals(enteredCode)) {
-                                currentEvent = dataSnapshot.getValue(ConCatEvent.class);
-                            } else {
-//                                ConCatEvent ccEvent = new ConCatEvent("TestEvent", "testCode1234");
-//                                mEventsDatabaseReference.push().setValue(ccEvent);
-                                logger.log(Level.SEVERE, "no event");
+                            for(DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                                ConCatEvent tempEvent = snapshot.getValue(ConCatEvent.class);
+                                setCurrentEvent(tempEvent);
                             }
                         }
 
@@ -139,21 +137,31 @@ public class MainActivity extends AppCompatActivity {
                         }
                     };
 
-                    findEventRef.addListenerForSingleValueEvent(eventListener);
+                    eventRefParent.addListenerForSingleValueEvent(eventListener);
 
-                    overlay.setVisibility(View.GONE);
-                    roomSuccessful = true;
-                    attachDatabaseReadListener();
-
+                    checkCurrentEventNull();
                     mMessageEditText.setText("");
                 } else {
                     ConCatMessage ccMessage = new ConCatMessage(mMessageEditText.getText().toString(), currentEvent);
-                    logger.log(Level.SEVERE, currentEvent.toString());
                     mMessagesDatabaseReference.push().setValue(ccMessage);
                     mMessageEditText.setText("");
                 }
             }
         });
+    }
+
+    private void checkCurrentEventNull() {
+        if (currentEvent != null) {
+            roomSuccessful = true;
+            attachDatabaseReadListener();
+            overlay.setVisibility(View.GONE);
+        } else {
+            logger.log(Level.SEVERE, "CE is null");
+        }
+    }
+
+    private void setCurrentEvent(ConCatEvent event) {
+        currentEvent = event;
     }
 
     private void attachDatabaseReadListener() {
@@ -162,7 +170,11 @@ public class MainActivity extends AppCompatActivity {
                 @Override
                 public void onChildAdded(DataSnapshot dataSnapshot, String s) {
                     ConCatMessage ccMessage = dataSnapshot.getValue(ConCatMessage.class);
-                    if (ccMessage.getEvent() != null && ccMessage.getEvent() == currentEvent) {
+                    checkCurrentEventNull();
+                    if (ccMessage.getEvent() != null) {
+//                        if (ccMessage.getEvent() == currentEvent) {
+//                            mMessageAdapter.add(ccMessage);
+//                        }
                         mMessageAdapter.add(ccMessage);
                     }
                 }
