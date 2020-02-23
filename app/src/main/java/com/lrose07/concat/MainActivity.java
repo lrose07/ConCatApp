@@ -94,7 +94,11 @@ public class MainActivity extends AppCompatActivity {
                     public void onDataChange(DataSnapshot dataSnapshot) {
                         for(DataSnapshot snapshot : dataSnapshot.getChildren()) {
                             ConCatEvent tempEvent = snapshot.getValue(ConCatEvent.class);
-                            setCurrentEvent(tempEvent);
+                            if (tempEvent != null) {
+                                if (tempEvent.getCode().equals(enteredCode)) {
+                                    setCurrentEvent(tempEvent);
+                                }
+                            }
                         }
                     }
 
@@ -104,7 +108,9 @@ public class MainActivity extends AppCompatActivity {
                     }
                 };
 
-                eventRefParent.addListenerForSingleValueEvent(eventListener);
+                if (eventRefParent != null) {
+                    eventRefParent.addListenerForSingleValueEvent(eventListener);
+                }
 
                 checkCurrentEventNull();
                 mMessageEditText.setText("");
@@ -139,7 +145,8 @@ public class MainActivity extends AppCompatActivity {
                 public void onChildAdded(@NonNull DataSnapshot dataSnapshot, String s) {
                     ConCatMessage ccMessage = dataSnapshot.getValue(ConCatMessage.class);
                     checkCurrentEventNull();
-                    if (ccMessage.getEvent() != null) {
+
+                    if (ccMessage != null && ccMessage.getEvent() != null) {
                         if (ccMessage.getEvent().getCode().equals(currentEvent.getCode())) {
                             mMessageAdapter.add(ccMessage);
                         }
