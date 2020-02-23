@@ -2,6 +2,7 @@ package com.lrose07.concat;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.Button;
@@ -12,7 +13,6 @@ public class Settings extends AppCompatActivity {
 
     private Button mLeave;
     private Button mShare;
-    private Switch mTextFet;
 
 
     @Override
@@ -22,17 +22,22 @@ public class Settings extends AppCompatActivity {
 
         mLeave = findViewById(R.id.leave);
         mShare = findViewById(R.id.share);
-        mTextFet = findViewById(R.id.textFet);
+
 
         mLeave.setOnClickListener(e ->
                 {
-
+                    Intent myIntent = new Intent(this, MainActivity.class);
+                    startActivity(myIntent);
                 }
         );
 
         mShare.setOnClickListener(e ->
                 {
-                    // null; //implement later need to have it share to social media probably pop up
+                    Intent sharingIntent = new Intent(android.content.Intent.ACTION_SEND);
+                    sharingIntent.setType("text/plain");
+                    String shareBody = "Join my concat meet up! The passcode is ";
+                    sharingIntent.putExtra(android.content.Intent.EXTRA_TEXT, shareBody);
+                    startActivity(Intent.createChooser(sharingIntent, "Share via"));
                 }
         );
 
