@@ -1,5 +1,15 @@
 package com.lrose07.concat;
 
+/**
+ * @author Lauren Rose, Elizabeth Jolly
+ * @version 23 Feb 2020
+ *
+ * The main activity for ConCat Chat app.
+ *
+ * This class handles main functionality of the app, including creation of new event rooms,
+ * joining existing event rooms, and sending and seeing messages.
+ */
+
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import com.google.firebase.database.ChildEventListener;
@@ -48,8 +58,12 @@ public class MainActivity extends AppCompatActivity {
 
     private ConCatEvent currentEvent;
 
-    Logger logger = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
+    private Logger logger = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
 
+    /**
+     * Triggers when activity is created when app launches
+     * @param savedInstanceState save state data
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -78,6 +92,8 @@ public class MainActivity extends AppCompatActivity {
         mMessageAdapter = new MessageAdapter(this, R.layout.message, ccMessages);
         mMessageListView.setAdapter(mMessageAdapter);
 
+        // watches text field and only enables Send button if text has been entered
+        // prevents saving empty strings to the db
         mMessageEditText.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -99,9 +115,11 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        // restrict message length to 1000 chars
         mMessageEditText.setFilters(new InputFilter[]{
-                new InputFilter.LengthFilter(100)});
+                new InputFilter.LengthFilter(1000)});
 
+        // handles if message is to join a room or send a message
         mSendButton.setOnClickListener(e -> {
             if (!roomSuccessful) {
                 final String enteredCode = mMessageEditText.getText().toString();
