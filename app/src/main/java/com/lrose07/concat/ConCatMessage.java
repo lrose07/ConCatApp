@@ -20,15 +20,12 @@ import java.sql.Timestamp;
 public class ConCatMessage {
 
     private String text;
-    private Timestamp timestamp;
     private ConCatEvent event;
 
-    public ConCatMessage() {
-    }
+    public ConCatMessage() {}
 
-    public ConCatMessage(String text, Timestamp time, ConCatEvent event) {
+    public ConCatMessage(String text, ConCatEvent event) {
         this.text = text;
-        this.timestamp = time;
         this.event = event;
     }
 
@@ -40,11 +37,11 @@ public class ConCatMessage {
         this.text = text;
     }
 
-    public Timestamp getTimestamp() {
-        return timestamp;
+    public ConCatEvent getEvent() {
+        return event;
     }
 
-    public void setTimestamp(Timestamp time) {
-        this.timestamp = time;
+    public void setEvent(ConCatEvent event) {
+        this.event = event;
     }
 }
