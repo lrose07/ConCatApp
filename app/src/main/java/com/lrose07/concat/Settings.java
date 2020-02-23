@@ -2,6 +2,7 @@ package com.lrose07.concat;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.Button;
@@ -26,7 +27,8 @@ public class Settings extends AppCompatActivity {
 
         mLeave.setOnClickListener(e ->
                 {
-
+                    Intent myIntent = new Intent(this, MainActivity.class);
+                    startActivity(myIntent);
                 }
         );
 
