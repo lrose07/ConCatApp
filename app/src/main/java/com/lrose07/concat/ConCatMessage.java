@@ -22,8 +22,7 @@ public class ConCatMessage {
     private String text;
     private ConCatEvent event;
 
-    public ConCatMessage() {
-    }
+    public ConCatMessage() {}
 
     public ConCatMessage(String text, ConCatEvent event) {
         this.text = text;
@@ -36,5 +35,13 @@ public class ConCatMessage {
 
     public void setText(String text) {
         this.text = text;
+    }
+
+    public ConCatEvent getEvent() {
+        return event;
+    }
+
+    public void setEvent(ConCatEvent event) {
+        this.event = event;
     }
 }
