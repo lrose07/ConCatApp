@@ -22,7 +22,7 @@ public class Settings extends AppCompatActivity {
 
         mLeave = findViewById(R.id.leave);
         mShare = findViewById(R.id.share);
-        mTextFet = findViewById(R.id.textFet);
+
 
         mLeave.setOnClickListener(e ->
                 {
