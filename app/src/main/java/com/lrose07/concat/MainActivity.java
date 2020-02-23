@@ -24,6 +24,8 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.ProgressBar;
+import android.view.View;
+import android.widget.TableLayout;
 
 import java.sql.Timestamp;
 import java.util.ArrayList;
@@ -37,6 +39,8 @@ public class MainActivity extends AppCompatActivity {
     private ImageButton mPhotoPickerButton;
     private EditText mMessageEditText;
     private Button mSendButton;
+    private Boolean roomSuccessful = false;
+    private TableLayout overlay;
 
     private FirebaseDatabase mFirebaseDatabase;
     private DatabaseReference mMessagesDatabaseReference;
@@ -70,6 +74,18 @@ public class MainActivity extends AppCompatActivity {
         mPhotoPickerButton = findViewById(R.id.photoPickerButton);
         mMessageEditText = findViewById(R.id.messageEditText);
         mSendButton = findViewById(R.id.sendButton);
+        overlay = findViewById(R.id.overlay);
+
+        mSendButton.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                if(roomSuccessful = false)
+                {
+                    overlay.setVisibility(View.GONE);
+                    roomSuccessful = true;
+                }
+            }
+        });
+
 
         List<ConCatMessage> ccMessages = new ArrayList<>();
         mMessageAdapter = new MessageAdapter(this, R.layout.message, ccMessages);

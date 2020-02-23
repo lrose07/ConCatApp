@@ -12,7 +12,7 @@ import com.bumptech.glide.Glide;
 
 import java.util.List;
 
-public class MessageAdapter extends ArrayAdapter<ConCatMessage> {
+public class    MessageAdapter extends ArrayAdapter<ConCatMessage> {
     public MessageAdapter(Context context, int resource, List<ConCatMessage> objects) {
         super(context, resource, objects);
     }
