@@ -23,25 +23,12 @@ public class MessageAdapter extends ArrayAdapter<ConCatMessage> {
             convertView = ((Activity) getContext()).getLayoutInflater().inflate(R.layout.message, parent, false);
         }
 
-        ImageView photoImageView = convertView.findViewById(R.id.photoImageView);
         TextView messageTextView = convertView.findViewById(R.id.messageTextView);
-        TextView authorTextView = convertView.findViewById(R.id.nameTextView);
 
         ConCatMessage message = getItem(position);
 
-        boolean isPhoto = message.getPhotoUrl() != null;
-        if (isPhoto) {
-            messageTextView.setVisibility(View.GONE);
-            photoImageView.setVisibility(View.VISIBLE);
-            Glide.with(photoImageView.getContext())
-                    .load(message.getPhotoUrl())
-                    .into(photoImageView);
-        } else {
-            messageTextView.setVisibility(View.VISIBLE);
-            photoImageView.setVisibility(View.GONE);
-            messageTextView.setText(message.getText());
-        }
-        authorTextView.setText(message.getName());
+        messageTextView.setVisibility(View.VISIBLE);
+        messageTextView.setText(message.getText());
 
         return convertView;
     }
