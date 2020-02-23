@@ -51,6 +51,7 @@ public class MainActivity extends AppCompatActivity {
 
     Logger logger = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
