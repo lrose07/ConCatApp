@@ -149,7 +149,7 @@ public class MainActivity extends AppCompatActivity {
 
         settings.setOnClickListener(e -> {
             Intent myIntent = new Intent(MainActivity.this, Settings.class);
-            //myIntent.putExtra("currentEvent", currentEvent);
+            myIntent.putExtra("currentEvent", currentEvent.getCode());
             startActivity(myIntent);
         });
 
