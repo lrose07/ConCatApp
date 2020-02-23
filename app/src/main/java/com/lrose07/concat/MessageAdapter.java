@@ -5,30 +5,33 @@ import android.content.Context;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
-import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.bumptech.glide.Glide;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
 import java.util.List;
 
+/**
+ * @author Lauren Rose, Elizabeth Jolly
+ * @version 23 Feb 2020
+ * Adapter class to help display messages to the app
+ */
 public class MessageAdapter extends ArrayAdapter<ConCatMessage> {
-    public MessageAdapter(Context context, int resource, List<ConCatMessage> objects) {
+    MessageAdapter(Context context, int resource, List<ConCatMessage> objects) {
         super(context, resource, objects);
     }
 
     @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
+    public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
         if (convertView == null) {
             convertView = ((Activity) getContext()).getLayoutInflater().inflate(R.layout.message, parent, false);
         }
 
         TextView messageTextView = convertView.findViewById(R.id.messageTextView);
-
         ConCatMessage message = getItem(position);
-
         messageTextView.setVisibility(View.VISIBLE);
-        messageTextView.setText(message.getText());
+        if (message != null) messageTextView.setText(message.getText());
 
         return convertView;
     }
