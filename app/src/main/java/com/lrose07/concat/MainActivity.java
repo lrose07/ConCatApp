@@ -39,7 +39,7 @@ public class MainActivity extends AppCompatActivity {
     private ImageButton mPhotoPickerButton;
     private EditText mMessageEditText;
     private Button mSendButton;
-    private Boolean roomSuccessful = false;
+    private boolean roomSuccessful = false;
     private TableLayout overlay;
 
     private FirebaseDatabase mFirebaseDatabase;
@@ -76,15 +76,7 @@ public class MainActivity extends AppCompatActivity {
         mSendButton = findViewById(R.id.sendButton);
         overlay = findViewById(R.id.overlay);
 
-        mSendButton.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                if(roomSuccessful = false)
-                {
-                    overlay.setVisibility(View.GONE);
-                    roomSuccessful = true;
-                }
-            }
-        });
+
 
 
         List<ConCatMessage> ccMessages = new ArrayList<>();
@@ -118,11 +110,17 @@ public class MainActivity extends AppCompatActivity {
         mSendButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                ConCatEvent event = new ConCatEvent();
-                ConCatMessage ccMessage = new ConCatMessage(mMessageEditText.getText().toString(),
-                        new Timestamp(System.currentTimeMillis()), event);
-                mMessagesDatabaseReference.push().setValue(ccMessage);
-                mMessageEditText.setText("");
+                if (!roomSuccessful)
+                {
+                    overlay.setVisibility(View.GONE);
+                    roomSuccessful = true;
+                } else {
+                    ConCatEvent event = new ConCatEvent();
+                    ConCatMessage ccMessage = new ConCatMessage(mMessageEditText.getText().toString(),
+                            new Timestamp(System.currentTimeMillis()), event);
+                    mMessagesDatabaseReference.push().setValue(ccMessage);
+                    mMessageEditText.setText("");
+                }
             }
         });
     }
