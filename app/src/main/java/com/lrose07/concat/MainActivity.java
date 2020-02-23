@@ -117,7 +117,6 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 if (!roomSuccessful) {
-                    // if code entered exists?
                     final String enteredCode = mMessageEditText.getText().toString();
                     final DatabaseReference findEventRef = mEventsDatabaseReference.child(enteredCode);
                     DatabaseReference eventRefParent = findEventRef.getParent();
@@ -162,6 +161,7 @@ public class MainActivity extends AppCompatActivity {
 
     private void setCurrentEvent(ConCatEvent event) {
         currentEvent = event;
+        checkCurrentEventNull();
     }
 
     private void attachDatabaseReadListener() {
