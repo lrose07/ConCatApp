@@ -145,7 +145,7 @@ public class MainActivity extends AppCompatActivity {
         settings.setOnClickListener(e -> {
             //System.out.print("test");
             Intent myIntent = new Intent(MainActivity.this, Settings.class);
-            //myIntent.putExtra("currentEvent", currentEvent);
+            myIntent.putExtra("currentEvent", currentEvent.getCode());
             startActivity(myIntent);
         });
 
@@ -276,7 +276,4 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    public void setTextFeatures(boolean bool){
-        textFeatures = bool;
-    }
 }
