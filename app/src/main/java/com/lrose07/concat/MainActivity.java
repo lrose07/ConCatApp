@@ -47,7 +47,6 @@ public class MainActivity extends AppCompatActivity {
     private ChildEventListener mChildEventListener;
 
     private ConCatEvent currentEvent;
-    private boolean textFeatures = false;
 
     Logger logger = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
 
@@ -113,13 +112,19 @@ public class MainActivity extends AppCompatActivity {
                 ValueEventListener eventListener = new ValueEventListener() {
                     @Override
                     public void onDataChange(DataSnapshot dataSnapshot) {
+                        boolean eventFound = false;
                         for(DataSnapshot snapshot : dataSnapshot.getChildren()) {
                             ConCatEvent tempEvent = snapshot.getValue(ConCatEvent.class);
                             if (tempEvent != null) {
                                 if (tempEvent.getCode().equals(enteredCode)) {
+                                    eventFound = true;
                                     setCurrentEvent(tempEvent);
+                                    makeToast("Successfully entered " + currentEvent.getName());
                                 }
                             }
+                        }
+                        if (!eventFound) {
+                            makeToast("Event chat not found!");
                         }
                     }
 
@@ -144,14 +149,12 @@ public class MainActivity extends AppCompatActivity {
         });
 
         settings.setOnClickListener(e -> {
-            //System.out.print("test");
             Intent myIntent = new Intent(MainActivity.this, Settings.class);
             myIntent.putExtra("currentEvent", currentEvent.getCode());
             startActivity(myIntent);
         });
 
     }
-
 
     private void newEventButtonClicked() {
         logger.log(Level.SEVERE, "new event button clicked");
@@ -165,21 +168,13 @@ public class MainActivity extends AppCompatActivity {
         String newEventName = eventName.getText().toString();
         String newEventCode = eventCode.getText().toString();
 
-        // check for code uniqueness
         checkCodeUnique(newEventName, newEventCode);
-//        if (!uniqueFlag) {
-//            Toast.makeText(this, "Event code taken.", Toast.LENGTH_SHORT).show();
-//        } else {
-//            ConCatEvent newEvent = new ConCatEvent(newEventName, newEventCode);
-//            mEventsDatabaseReference.push().setValue(newEvent);
-//
-//            enterNewEventRoom(newEvent);
-//        }
     }
 
     private void enterNewEventRoom(ConCatEvent event) {
         currentEvent = event;
         checkCurrentEventNull();
+        makeToast("Successfully entered " + currentEvent.getName());
     }
 
     private void checkCodeUnique(String name, String code) {
@@ -222,6 +217,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void makeToast(String message) {
+        logger.log(Level.SEVERE, "toast made");
         Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
     }
 
@@ -276,5 +272,4 @@ public class MainActivity extends AppCompatActivity {
             mMessagesDatabaseReference.addChildEventListener(mChildEventListener);
         }
     }
-
 }
