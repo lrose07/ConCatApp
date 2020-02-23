@@ -1,15 +1,5 @@
 package com.lrose07.concat;
 
-/**
- * @author Lauren Rose, Elizabeth Jolly
- * @version 23 Feb 2020
- *
- * The main activity for ConCat Chat app.
- *
- * This class handles main functionality of the app, including creation of new event rooms,
- * joining existing event rooms, and sending and seeing messages.
- */
-
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import com.google.firebase.database.ChildEventListener;
@@ -36,6 +26,15 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import android.content.Intent;
 
+/**
+ * @author Lauren Rose, Elizabeth Jolly
+ * @version 23 Feb 2020
+ *
+ * The main activity for ConCat Chat app.
+ *
+ * This class handles main functionality of the app, including creation of new event rooms,
+ * joining existing event rooms, and sending and seeing messages.
+ */
 public class MainActivity extends AppCompatActivity {
 
     private MessageAdapter mMessageAdapter;
@@ -165,6 +164,7 @@ public class MainActivity extends AppCompatActivity {
 
         });
 
+        // changes to settings activity
         settings.setOnClickListener(e -> {
             Intent myIntent = new Intent(MainActivity.this, Settings.class);
             myIntent.putExtra("currentEvent", currentEvent.getCode());
@@ -173,27 +173,45 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+    /**
+     * handles display item visibility
+     */
     private void newEventButtonClicked() {
-        logger.log(Level.SEVERE, "new event button clicked");
         eventName.setVisibility(View.VISIBLE);
         eventCode.setVisibility(View.VISIBLE);
         createEvent.setVisibility(View.VISIBLE);
         newEventButton.setVisibility(View.GONE);
     }
 
+    /**
+     * gets new event info from text boxes
+     */
     private void createEventClicked() {
         String newEventName = eventName.getText().toString();
         String newEventCode = eventCode.getText().toString();
 
-        checkCodeUnique(newEventName, newEventCode);
+        if (newEventName.equals("") || newEventCode.equals("")) {
+            makeToast("Name and Code must be filled out");
+        } else {
+            checkCodeUnique(newEventName, newEventCode);
+        }
     }
 
+    /**
+     * handles changing user into event chat room
+     * @param event the event associated with the code entered
+     */
     private void enterNewEventRoom(ConCatEvent event) {
         currentEvent = event;
         checkCurrentEventNull();
         makeToast("Successfully entered " + currentEvent.getName());
     }
 
+    /**
+     * checks if event code entered is unique
+     * @param name event name
+     * @param code event code
+     */
     private void checkCodeUnique(String name, String code) {
         DatabaseReference findEventRef = mEventsDatabaseReference.child(code);
         DatabaseReference eventRefParent = findEventRef.getParent();
@@ -233,15 +251,26 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    /**
+     * makes a toast
+     * @param message message for the toast to display
+     */
     private void makeToast(String message) {
         logger.log(Level.SEVERE, "toast made");
         Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
     }
 
+    /**
+     * sets flag for uniqueness of an item
+     * @param bool flag value
+     */
     private void setUniqueFlag(boolean bool) {
         uniqueFlag = bool;
     }
 
+    /**
+     * verifies that current event exists and is set
+     */
     private void checkCurrentEventNull() {
         if (currentEvent != null) {
             roomSuccessful = true;
@@ -253,11 +282,18 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    /**
+     * sets the current event to the given event
+     * @param event event that is current
+     */
     private void setCurrentEvent(ConCatEvent event) {
         currentEvent = event;
         checkCurrentEventNull();
     }
 
+    /**
+     * reads firebase db for messages to send to adapter for display
+     */
     private void attachDatabaseReadListener() {
         if (mChildEventListener == null) {
             mChildEventListener = new ChildEventListener() {
