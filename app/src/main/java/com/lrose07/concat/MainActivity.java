@@ -2,19 +2,13 @@ package com.lrose07.concat;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-import com.google.firebase.remoteconfig.FirebaseRemoteConfig;
-import com.google.firebase.remoteconfig.FirebaseRemoteConfigSettings;
-import com.google.firebase.storage.FirebaseStorage;
-import com.google.firebase.storage.StorageReference;
-import com.google.firebase.storage.UploadTask;
+
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.InputFilter;
@@ -22,42 +16,25 @@ import android.text.TextWatcher;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageButton;
 import android.widget.ListView;
-import android.widget.ProgressBar;
-import android.view.View;
 import android.widget.TableLayout;
 
-import java.sql.Timestamp;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class MainActivity extends AppCompatActivity {
 
-    private ListView mMessageListView;
     private MessageAdapter mMessageAdapter;
-    private ProgressBar mProgressBar;
-    private ImageButton mPhotoPickerButton;
     private EditText mMessageEditText;
     private Button mSendButton;
     private boolean roomSuccessful = false;
     private TableLayout overlay;
 
-    private FirebaseDatabase mFirebaseDatabase;
     private DatabaseReference mMessagesDatabaseReference;
     private DatabaseReference mEventsDatabaseReference;
     private ChildEventListener mChildEventListener;
-
-    private FirebaseAuth mFirebaseAuth;
-    private FirebaseAuth.AuthStateListener mAuthStateListener;
-
-    private FirebaseStorage mFirebaseStorage;
-    private StorageReference mChatPhotosStorageReference;
-
-    private FirebaseRemoteConfig mFirebaseRemoteConfig;
 
     private ConCatEvent currentEvent;
 
@@ -68,15 +45,12 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        mFirebaseDatabase = FirebaseDatabase.getInstance();
-        mFirebaseAuth = FirebaseAuth.getInstance();
-        mFirebaseStorage = FirebaseStorage.getInstance();
-        mFirebaseRemoteConfig = FirebaseRemoteConfig.getInstance();
+        FirebaseDatabase mFirebaseDatabase = FirebaseDatabase.getInstance();
 
         mMessagesDatabaseReference = mFirebaseDatabase.getReference().child("messages");
         mEventsDatabaseReference = mFirebaseDatabase.getReference().child("events");
 
-        mMessageListView = findViewById(R.id.messageListView);
+        ListView mMessageListView = findViewById(R.id.messageListView);
         mMessageEditText = findViewById(R.id.messageEditText);
         mSendButton = findViewById(R.id.sendButton);
         overlay = findViewById(R.id.overlay);
@@ -109,39 +83,43 @@ public class MainActivity extends AppCompatActivity {
         mMessageEditText.setFilters(new InputFilter[]{
                 new InputFilter.LengthFilter(100)});
 
-        mSendButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (!roomSuccessful) {
-                    final String enteredCode = mMessageEditText.getText().toString();
-                    final DatabaseReference findEventRef = mEventsDatabaseReference.child(enteredCode);
-                    DatabaseReference eventRefParent = findEventRef.getParent();
+        mSendButton.setOnClickListener(e -> {
+            if (!roomSuccessful) {
+                final String enteredCode = mMessageEditText.getText().toString();
+                final DatabaseReference findEventRef = mEventsDatabaseReference.child(enteredCode);
+                DatabaseReference eventRefParent = findEventRef.getParent();
 
-                    ValueEventListener eventListener = new ValueEventListener() {
-                        @Override
-                        public void onDataChange(DataSnapshot dataSnapshot) {
-                            for(DataSnapshot snapshot : dataSnapshot.getChildren()) {
-                                ConCatEvent tempEvent = snapshot.getValue(ConCatEvent.class);
-                                setCurrentEvent(tempEvent);
+                ValueEventListener eventListener = new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        for(DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                            ConCatEvent tempEvent = snapshot.getValue(ConCatEvent.class);
+                            if (tempEvent != null) {
+                                if (tempEvent.getCode().equals(enteredCode)) {
+                                    setCurrentEvent(tempEvent);
+                                }
                             }
                         }
+                    }
 
-                        @Override
-                        public void onCancelled(DatabaseError databaseError) {
-                            logger.log(Level.INFO, "Database error");
-                        }
-                    };
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError databaseError) {
+                        logger.log(Level.INFO, "Database error");
+                    }
+                };
 
+                if (eventRefParent != null) {
                     eventRefParent.addListenerForSingleValueEvent(eventListener);
-
-                    checkCurrentEventNull();
-                    mMessageEditText.setText("");
-                } else {
-                    ConCatMessage ccMessage = new ConCatMessage(mMessageEditText.getText().toString(), currentEvent);
-                    mMessagesDatabaseReference.push().setValue(ccMessage);
-                    mMessageEditText.setText("");
                 }
+
+                checkCurrentEventNull();
+                mMessageEditText.setText("");
+            } else {
+                ConCatMessage ccMessage = new ConCatMessage(mMessageEditText.getText().toString(), currentEvent);
+                mMessagesDatabaseReference.push().setValue(ccMessage);
+                mMessageEditText.setText("");
             }
+
         });
     }
 
@@ -164,10 +142,11 @@ public class MainActivity extends AppCompatActivity {
         if (mChildEventListener == null) {
             mChildEventListener = new ChildEventListener() {
                 @Override
-                public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+                public void onChildAdded(@NonNull DataSnapshot dataSnapshot, String s) {
                     ConCatMessage ccMessage = dataSnapshot.getValue(ConCatMessage.class);
                     checkCurrentEventNull();
-                    if (ccMessage.getEvent() != null) {
+
+                    if (ccMessage != null && ccMessage.getEvent() != null) {
                         if (ccMessage.getEvent().getCode().equals(currentEvent.getCode())) {
                             mMessageAdapter.add(ccMessage);
                         }
@@ -175,16 +154,16 @@ public class MainActivity extends AppCompatActivity {
                 }
 
                 @Override
-                public void onChildChanged(DataSnapshot dataSnapshot, String s) {}
+                public void onChildChanged(@NonNull DataSnapshot dataSnapshot, String s) {}
 
                 @Override
-                public void onChildRemoved(DataSnapshot dataSnapshot) {}
+                public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {}
 
                 @Override
-                public void onChildMoved(DataSnapshot dataSnapshot, String s) {}
+                public void onChildMoved(@NonNull DataSnapshot dataSnapshot, String s) {}
 
                 @Override
-                public void onCancelled(DatabaseError databaseError) {}
+                public void onCancelled(@NonNull DatabaseError databaseError) {}
             };
 
             mMessagesDatabaseReference.addChildEventListener(mChildEventListener);
