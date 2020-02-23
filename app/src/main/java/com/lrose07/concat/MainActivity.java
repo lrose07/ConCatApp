@@ -24,6 +24,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import android.content.Intent;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -37,6 +38,7 @@ public class MainActivity extends AppCompatActivity {
     private EditText eventName;
     private EditText eventCode;
     private Button createEvent;
+    private Button settings;
 
     private boolean uniqueFlag = true;
 
@@ -45,6 +47,7 @@ public class MainActivity extends AppCompatActivity {
     private ChildEventListener mChildEventListener;
 
     private ConCatEvent currentEvent;
+    private boolean textFeatures = false;
 
     Logger logger = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
 
@@ -62,6 +65,7 @@ public class MainActivity extends AppCompatActivity {
         mMessageEditText = findViewById(R.id.messageEditText);
         mSendButton = findViewById(R.id.sendButton);
         overlay = findViewById(R.id.overlay);
+        settings = findViewById(R.id.settings);
 
         newEventButton = findViewById(R.id.newEventButton);
         eventName = findViewById(R.id.eventName);
@@ -137,7 +141,15 @@ public class MainActivity extends AppCompatActivity {
             }
 
         });
+
+        settings.setOnClickListener(e -> {
+            //System.out.print("test");
+            Intent myIntent = new Intent(MainActivity.this, Settings.class);
+            startActivity(myIntent);
+        });
+
     }
+
 
     private void newEventButtonClicked() {
         logger.log(Level.SEVERE, "new event button clicked");
@@ -208,6 +220,7 @@ public class MainActivity extends AppCompatActivity {
             roomSuccessful = true;
             attachDatabaseReadListener();
             overlay.setVisibility(View.GONE);
+            settings.setVisibility(View.VISIBLE);
         } else {
             logger.log(Level.SEVERE, "CE is null");
         }
@@ -248,5 +261,9 @@ public class MainActivity extends AppCompatActivity {
 
             mMessagesDatabaseReference.addChildEventListener(mChildEventListener);
         }
+    }
+
+    public void setTextFeatures(boolean bool){
+        textFeatures = bool;
     }
 }
