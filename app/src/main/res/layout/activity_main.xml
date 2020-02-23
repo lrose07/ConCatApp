@@ -83,7 +83,7 @@
             android:layout_marginBottom="80px"
             android:ems="10"
             android:inputType="textPersonName"
-            android:text="Event Name"
+            android:text="" />
             android:visibility="gone" />
 
         <EditText
@@ -94,7 +94,7 @@
             android:layout_marginBottom="60px"
             android:ems="10"
             android:inputType="textPersonName"
-            android:text="Event Code"
+            android:text="" />
             android:visibility="gone" />
 
         <Button

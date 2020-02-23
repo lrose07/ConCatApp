@@ -210,7 +210,9 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void setUniqueFlag(boolean bool) {
+        System.out.println("uf: " + uniqueFlag);
         uniqueFlag = bool;
+        System.out.println("uf: " + uniqueFlag);
     }
 
     private void checkCurrentEventNull() {
