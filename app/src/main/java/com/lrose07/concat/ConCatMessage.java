@@ -28,7 +28,7 @@ public class ConCatMessage {
 
     // Getters/Setters
 
-    String getText() {
+    public String getText() {
         return text;
     }
 
@@ -36,7 +36,7 @@ public class ConCatMessage {
         this.text = text;
     }
 
-    ConCatEvent getEvent() {
+    public ConCatEvent getEvent() {
         return event;
     }
 
