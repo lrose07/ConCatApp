@@ -9,8 +9,8 @@ package com.lrose07.concat;
 public class ConCatEvent {
 
     // these are public due to a Serializable issue
-    public String name;
-    public String code;
+    private String name;
+    private String code;
 
     /**
      * no-parameter constructor
@@ -31,19 +31,19 @@ public class ConCatEvent {
 
     // Getters/Setters
 
-    void setName(String name) {
+    public void setName(String name) {
         this.name = name;
     }
 
-    String getName() {
+    public String getName() {
         return name;
     }
 
-    void setCode(String code) {
+    public void setCode(String code) {
         this.code = code;
     }
 
-    String getCode() {
+    public String getCode() {
         return code;
     }
 }
