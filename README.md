@@ -1,6 +1,6 @@
 # ConCatApp
 
-### Try it out: https://drive.google.com/open?id=10pLjIE2Nabcs_VN0gTwZiXzbyF8C3-eo
+### Try it out: https://bit.ly/ConCatAppAPK
 
 ### Use event code ph20 for a sneak peak at what an active chat might look like!
 
